@@ -70,12 +70,13 @@ jobs:
           push: true
           tags: your-dockerhub-username/react-app:latest
 
-      - name: Deploy to Server
+      - name: Deploy to AWS EC2
         env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          ssh your_user@your_server_ip << 'ENDSSH'
-            docker-compose -f /path/to/docker-compose.yml pull
-            docker-compose -f /path/to/docker-compose.yml up -d
+         ssh -o StrictHostKeyChecking=no -i /path/to/your-key.pem ec2-user@your-server-ip << 'ENDSSH'
+            cd /home/alnimreen/capston-project
+            docker-compose pull
+            docker-compose up -d
           ENDSSH
