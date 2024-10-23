@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'  
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Verify Java version
         run: java -version
 
@@ -95,7 +95,8 @@ jobs:
           context: ./code-editor-frontend
           push: true
           tags: lana0193582/react-app:latest
-
+          build-args: 
+            NPM_CONFIG_PRODUCTION=false
       - name: Check MongoDB logs
         run: docker-compose logs mongodb
         
