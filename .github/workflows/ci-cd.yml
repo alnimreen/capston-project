@@ -38,7 +38,8 @@ jobs:
           distribution: 'adopt'
 
       - name: Build with Maven
-        run: mvn clean package 
+        run: mvn clean package
+        working-directory: ./CollabCode
       - name: List files in CollabCode/Dockerfiles/java
         run: ls -la ./CollabCode/Dockerfiles/java
 
@@ -74,6 +75,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./CollabCode
+          file: ./CollabCode/Dockerfile
           push: true
           tags: lana0193582/spring-app:latest
 
