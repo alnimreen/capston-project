@@ -31,6 +31,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'  
+          distribution: 'adopt'
+
+      - name: Build with Maven
+        run: mvn clean package 
       - name: List files in CollabCode/Dockerfiles/java
         run: ls -la ./CollabCode/Dockerfiles/java
 
