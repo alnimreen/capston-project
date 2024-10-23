@@ -52,7 +52,7 @@ jobs:
           context: ./CollabCode/Dockerfiles/java
           file: ./CollabCode/Dockerfiles/java/Dockerfile
           push: true
-          tags: your-dockerhub-username/java-container:latest
+          tags: lana0193582/java-container:latest
 
       - name: Build and push Python image
         uses: docker/build-push-action@v3
@@ -60,21 +60,21 @@ jobs:
           context: ./CollabCode/Dockerfiles/python
           file: ./CollabCode/Dockerfiles/python/Dockerfile
           push: true
-          tags: your-dockerhub-username/python-container:latest
+          tags: lana0193582/python-container:latest
 
       - name: Build and push Spring app image
         uses: docker/build-push-action@v3
         with:
           context: ./CollabCode
           push: true
-          tags: your-dockerhub-username/spring-app:latest
+          tags: lana0193582/spring-app:latest
 
       - name: Build and push React app image
         uses: docker/build-push-action@v3
         with:
           context: ./code-editor-frontend
           push: true
-          tags: your-dockerhub-username/react-app:latest
+          tags: lana0193582/react-app:latest
 
       - name: Check MongoDB logs
         run: docker-compose logs mongodb
