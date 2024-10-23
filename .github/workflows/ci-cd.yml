@@ -107,7 +107,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@98.81.79.167 << 'ENDSSH'
-            cd /home/alnimreen/capston-project
+            # Create the project directory if it does not exist
+            mkdir -p /home/alnimreen/c
+
+            # Navigate to the project directory
+            cd /home/alnimreen/c || exit
+
+            # Clone the repository if it doesn't exist
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/alnimreen/c.git .
+            else
+              git pull
+            fi
+
+            # Pull the latest images and recreate the containers
             docker-compose pull
             docker-compose up -d
           ENDSSH
