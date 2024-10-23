@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./CollabCode/Dockerfiles/java
-          file: Dockerfile
+          file: ./CollabCode/Dockerfiles/java/Dockerfile
           push: true
           tags: your-dockerhub-username/java-container:latest
 
@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./CollabCode/Dockerfiles/python
-          file: Dockerfile
+          file: ./CollabCode/Dockerfiles/python/Dockerfile
           push: true
           tags: your-dockerhub-username/python-container:latest
 
