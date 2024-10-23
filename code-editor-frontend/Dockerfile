@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Install serve to serve the build directory
-RUN npm install -g serve
+RUN npm install --no-optional
 # Use Nginx to serve the built application
 #FROM nginx:alpine
 
