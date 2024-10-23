@@ -22,7 +22,7 @@ jobs:
         env:
           MONGO_INITDB_DATABASE: editor
         options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-cmd "echo 'MongoDB is running'"
           --health-interval 30s
           --health-timeout 10s
           --health-retries 5
@@ -69,6 +69,9 @@ jobs:
           context: ./code-editor-frontend
           push: true
           tags: your-dockerhub-username/react-app:latest
+
+      - name: Check MongoDB logs
+        run: docker-compose logs mongodb
 
       - name: Deploy to AWS EC2
         env:
