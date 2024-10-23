@@ -94,6 +94,11 @@ jobs:
 
       - name: Check MongoDB logs
         run: docker-compose logs mongodb
+      - name: Decode SSH Private Key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY_BASE64 }}" | base64 --decode > private_key.pem
+
+      - name: Set permissions for private key
+        run: chmod 600 private_key.pem
 
       - name: Deploy to AWS EC2
         env:
