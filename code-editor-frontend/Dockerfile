@@ -16,7 +16,7 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Use the serve package to serve the build
+# Use a new stage to serve the application
 FROM node:18-alpine
 
 # Set the working directory
@@ -32,4 +32,4 @@ COPY --from=build /app/build ./build
 EXPOSE 3000
 
 # Command to run the serve
-CMD ["npx", "serve", "-s", "build"]
+CMD ["serve", "-s", "build"]
