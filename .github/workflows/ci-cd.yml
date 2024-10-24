@@ -44,6 +44,10 @@ jobs:
           docker system prune -af
           docker volume prune -f
           docker image prune -af
+      - name: Clean NPM cache
+        working-directory: ./code-editor-frontend
+        run: npm cache clean --force
+
 
       # Use tmpfs for npm global directory
       - name: Create npm directory in tmpfs
@@ -61,10 +65,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Clean node_modules
+        run: rm -rf ./code-editor-frontend/node_modules ./code-editor-frontend/package-lock.json
 
       - name: Install NPM dependencies
         working-directory: ./code-editor-frontend
-        run: npm install --no-optional
+        run: npm install --legacy-peer-deps
         
       - name: Verify Maven installation
         run: mvn -v
