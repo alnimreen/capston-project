@@ -59,7 +59,7 @@ function Rooms() {
       setErrorMessage('User not logged in');
       clearMessages();
     }
-  }, [location.search]);
+  }, [location.search, setUser]);
 
   const handleCreateRoom = async () => {
     if (!roomName || !uuid) {
