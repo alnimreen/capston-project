@@ -4,21 +4,23 @@ FROM node:18-alpine as build
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
+# Copy package.json and package-lock.json files
 COPY package*.json ./
 
 # Install the dependencies
-RUN npm install -g serve
+RUN npm install
+
 # Copy the rest of the application code
 COPY . .
 
 # Build the application
 RUN npm run build
 
+# Use a lightweight server to serve the build
+FROM serve:latest
+WORKDIR /app
+COPY --from=build /app/build ./build
 
-#FROM serve:latest
-#WORKDIR /app
-#COPY --from=build /app/build ./build
 # Expose the port the app will run on
 EXPOSE 3000
 
