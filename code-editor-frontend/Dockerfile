@@ -8,12 +8,9 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install the dependencies
-RUN npm install
-
+RUN npm install -g serve
 # Copy the rest of the application code
 COPY . .
-
-RUN npm install -g serve
 
 # Build the application
 RUN npm run build
