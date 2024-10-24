@@ -17,16 +17,16 @@ COPY . .
 RUN npm run build
 
 # Use the serve package to serve the build
-FROM node:18-alpine
+#FROM node:18-alpine
 
 # Set the working directory
-WORKDIR /app
+#WORKDIR /app
 
 # Install the serve package globally
-RUN npm install -g serve
+#RUN npm install -g serve
 
 # Copy the build files from the previous stage
-COPY --from=build /app/build ./build
+#COPY --from=build /app/build ./build
 
 # Expose the port the app will run on
 EXPOSE 3000
