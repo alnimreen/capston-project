@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useUser } from './UserContext';
 import styles from './styles/authStyle.module.css';
-import axios from 'axios';
+
 
 function AuthPage() {
     const [userId, setUserId] = useState('');
