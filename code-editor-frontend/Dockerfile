@@ -19,8 +19,8 @@ RUN npm install -g serve
 RUN npm run build
 
 #FROM serve:latest
-WORKDIR /app
-COPY --from=build /app/build ./build
+#WORKDIR /app
+#COPY --from=build /app/build ./build
 # Expose the port the app will run on
 EXPOSE 3000
 
