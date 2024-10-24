@@ -40,9 +40,22 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y maven
+      - name: Cleanup Docker
+        run: |
+          docker system prune -af
+          docker volume prune -f
+          
+      - name: Cache NPM dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
       - name: Install NPM dependencies
         working-directory: ./code-editor-frontend
-        run: npm install
+        run: npm install --no-optional
         
       - name: Verify Maven installation
         run: mvn -v
