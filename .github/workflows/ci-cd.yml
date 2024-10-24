@@ -107,6 +107,14 @@ jobs:
 
       - name: Set permissions for private key
         run: chmod 600 private_key.pem
+      - name: Cleanup 
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo docker system prune -a --volumes -f # Add this line for Docker cleanup
 
       - name: Deploy to AWS EC2
         env:
