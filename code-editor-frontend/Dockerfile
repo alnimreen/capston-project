@@ -13,10 +13,10 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-RUN npm install -g serve
 
 # Build the application
 RUN npm run build
+RUN npm install -g serve
 
 #FROM serve:latest
 #WORKDIR /app
