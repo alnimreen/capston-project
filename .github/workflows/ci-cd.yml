@@ -38,44 +38,7 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Cleanup Docker
-        run: |
-          docker system prune -af
-          docker volume prune -f
-          docker image prune -af
-      - name: Clean NPM cache
-        working-directory: ./code-editor-frontend
-        run: npm cache clean --force
-
-
-      # Use tmpfs for npm global directory
-      - name: Create npm directory in tmpfs
-        run: sudo mkdir -p /run/npm-global
-
-      - name: Configure npm to use tmpfs
-        run: |
-          sudo npm config set prefix '/run/npm-global'
-          export PATH=/run/npm-global/bin:$PATH
-
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
-        with:
-          path: /run/npm-global
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Clean node_modules
-        run: rm -rf ./code-editor-frontend/node_modules ./code-editor-frontend/package-lock.json
-
-      - name: Install specific NPM dependencies
-        working-directory: ./code-editor-frontend
-        run: npm install react-scripts@5 ajv@6 ajv-keywords@4 --legacy-peer-deps
-
         
-      - name: Verify Maven installation
-        run: mvn -v
-
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -136,10 +99,6 @@ jobs:
           push: true
           tags: lana0193582/spring-app:latest
 
-      - name: Build React app
-        working-directory: ./code-editor-frontend
-        run: CI=false npm run build
-        
       - name: Build and push React app image
         uses: docker/build-push-action@v3
         with:
