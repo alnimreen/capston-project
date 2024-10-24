@@ -68,9 +68,10 @@ jobs:
       - name: Clean node_modules
         run: rm -rf ./code-editor-frontend/node_modules ./code-editor-frontend/package-lock.json
 
-      - name: Install NPM dependencies
+      - name: Install specific NPM dependencies
         working-directory: ./code-editor-frontend
-        run: npm install --legacy-peer-deps
+        run: npm install react-scripts@5 ajv@6 ajv-keywords@4 --legacy-peer-deps
+
         
       - name: Verify Maven installation
         run: mvn -v
