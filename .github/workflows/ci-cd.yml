@@ -53,11 +53,6 @@ jobs:
         working-directory: ./CollabCode
       - name: Check if JAR file was created
         run: ls -la ./CollabCode/target
-        
-      - name: Install Docker Compose 
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
 
       - name: List files in CollabCode/Dockerfiles/java
         run: ls -la ./CollabCode/Dockerfiles/java
@@ -119,7 +114,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.81.150.100 << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.163.68.196 << 'ENDSSH'
             # Create the project directory if it does not exist
             sudo usermod -aG docker ubuntu
             sleep 5
