@@ -30,43 +30,54 @@ jobs:
     steps:
       - name: Cleanup disk space
         run: |
-            sudo apt-get clean
-            sudo rm -rf /var/lib/apt/lists/*
-            sudo rm -rf /usr/share/dotnet
-            sudo rm -rf /usr/local/lib/android
-            sudo rm -rf /opt/ghc
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+
       - name: Checkout code
         uses: actions/checkout@v2
-        
 
       - name: Cleanup Docker
         run: |
           docker system prune -af
           docker volume prune -f
           docker image prune -af
+
+      # Use tmpfs for npm global directory
+      - name: Create npm directory in tmpfs
+        run: mkdir -p /run/npm-global
+
+      - name: Configure npm to use tmpfs
+        run: |
+          npm config set prefix '/run/npm-global'
+          export PATH=/run/npm-global/bin:$PATH
+
       - name: Cache NPM dependencies
         uses: actions/cache@v2
         with:
-          path: ~/.npm
+          path: /run/npm-global
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install NPM dependencies
         working-directory: ./code-editor-frontend
         run: npm install --no-optional
         
       - name: Verify Maven installation
         run: mvn -v
+
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           java-version: '17'  
           distribution: 'temurin'
+
       - name: Verify Java version
         run: java -version
 
-    
       - name: Install Docker Compose v2
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -85,7 +96,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }} 
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}   
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push Java image
         uses: docker/build-push-action@v3
@@ -102,9 +113,11 @@ jobs:
           file: ./CollabCode/Dockerfiles/python/Dockerfile
           push: true
           tags: lana0193582/python-container:latest
+
       - name: Build with Maven
         run: mvn clean package
         working-directory: ./CollabCode
+
       - name: Check if JAR file was created
         run: ls -la ./CollabCode/target
 
@@ -128,12 +141,12 @@ jobs:
           tags: lana0193582/react-app:latest
           build-args: 
             NPM_CONFIG_PRODUCTION=false
+
       - name: Cleanup unused Docker resources
         run: |
-            docker rmi $(docker images -f "dangling=true" -q) || true
-            docker rm $(docker ps -a -f "status=exited" -q) || true
+          docker rmi $(docker images -f "dangling=true" -q) || true
+          docker rm $(docker ps -a -f "status=exited" -q) || true
 
-        
       - name: Decode SSH Private Key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
 
