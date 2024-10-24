@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
-import CodeEditor from './CodeEditor';
 import { useUser } from './UserContext'; // Import the useUser hook
 import { useNavigate } from 'react-router-dom'; // Import navigate
 import styles from './styles/roomDetailsStyle.module.css'; // Adjust the path as necessary
