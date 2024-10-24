@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';  
-import { useParams, useNavigate } from 'react-router-dom'; // Import useParams and useNavigate
+import { useParams } from 'react-router-dom'; // Import useParams and useNavigate
 import api from '../services/api';
 import { useUser } from './UserContext';
 import styles from './styles/codeEditorStyle.module.css'; // Import as a module
@@ -10,7 +10,6 @@ function CodeEditor() {
   const [file, setFile] = useState(null);
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('python'); // Default language
-  const [languages] = useState(['python', 'java']); // List of supported languages
   const [versions, setVersions] = useState([]); // Store file versions
   const [isVersionControlVisible, setIsVersionControlVisible] = useState(false); // Toggle version control view
   const [comments, setComments] = useState([]);
@@ -19,7 +18,6 @@ function CodeEditor() {
   const [participants, setParticipants] = useState([]); // Store participants
   const [executionOutput, setExecutionOutput] = useState(''); // To store execution output
   const [userRole, setUserRole] = useState(null);
-  const navigate = useNavigate();
   const ws = useRef(null);  // WebSocket reference
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
   const [successMessage, setSuccessMessage] = useState(''); // State for success messages
@@ -83,7 +81,7 @@ function CodeEditor() {
         }
       };
     }
-  }, [roomId]);
+  }, [roomId, handleWebSocketMessage, user]);
 
   // Handle incoming WebSocket messages
   const handleWebSocketMessage = (message) => {
