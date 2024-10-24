@@ -35,7 +35,17 @@ jobs:
             sudo rm -rf /opt/ghc
       - name: Checkout code
         uses: actions/checkout@v2
-
+        
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven
+      - name: Install NPM dependencies
+        working-directory: ./code-editor-frontend
+        run: npm install
+        
+      - name: Verify Maven installation
+        run: mvn -v
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -49,11 +59,6 @@ jobs:
         working-directory: ./CollabCode
       - name: Check if JAR file was created
         run: ls -la ./CollabCode/target
-        
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
 
       - name: Install Docker Compose v2
         run: |
@@ -99,6 +104,10 @@ jobs:
           push: true
           tags: lana0193582/spring-app:latest
 
+      - name: Build React app
+        working-directory: ./code-editor-frontend
+        run: npm run build
+        
       - name: Build and push React app image
         uses: docker/build-push-action@v3
         with:
