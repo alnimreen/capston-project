@@ -98,7 +98,9 @@ jobs:
           file: ./CollabCode/Dockerfile
           push: true
           tags: lana0193582/spring-app:latest
-
+      - name: Build Docker images
+        run: docker-compose build
+        
       - name: Build and push React app image
         uses: docker/build-push-action@v3
         with:
