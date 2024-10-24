@@ -11,7 +11,8 @@ function RoomDetails() {
   const [files, setFiles] = useState([]); // Handle files
   const [currentPath, setCurrentPath] = useState(''); // Handle current path in the file system
   const [fileName, setName] = useState('');
-
+  const [ setMessages] = useState([]);
+  const [setCode] = useState(''); // To store the code content
   const [userRole, setUserRole] = useState(null);
   const { user } = useUser();
   const [selectedFileForUpload, setSelectedFileForUpload] = useState(null);
