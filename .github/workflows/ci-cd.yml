@@ -47,11 +47,11 @@ jobs:
 
       # Use tmpfs for npm global directory
       - name: Create npm directory in tmpfs
-        run: mkdir -p /run/npm-global
+        run: sudo mkdir -p /run/npm-global
 
       - name: Configure npm to use tmpfs
         run: |
-          npm config set prefix '/run/npm-global'
+          sudo npm config set prefix '/run/npm-global'
           export PATH=/run/npm-global/bin:$PATH
 
       - name: Cache NPM dependencies
