@@ -8,7 +8,7 @@ import styles from './styles/roomDetailsStyle.module.css'; // Adjust the path as
 function RoomDetails() {
   const { roomId } = useParams();
   const [files, setFiles] = useState([]); // Handle files
-  const [currentPath, setCurrentPath] = useState(''); // Handle current path in the file system
+  const [currentPath] = useState(''); // Handle current path in the file system
   const [fileName, setName] = useState('');
   const [ setMessages] = useState([]);
   const [setCode] = useState(''); // To store the code content
@@ -91,7 +91,7 @@ function RoomDetails() {
         socket.close(); 
       }
     };
-  }, [roomId, socket]);
+  }, [roomId, socket, setMessages]);
 
  
   useEffect(() => {
