@@ -66,10 +66,33 @@ function CodeEditor() {
         console.log('Connected to WebSocket');
       };
 
-      socket.onmessage = (event) => {
+      const handleWebSocketMessage = (event) => {
         const message = JSON.parse(event.data);
-        handleWebSocketMessage(message);
+        console.log('role', userRole);
+
+        if (message.type === 'CODE_UPDATE' && (userRole === 'ADMIN' || userRole === 'EDITOR')) {
+          switch (message.type) {
+            case 'CODE_UPDATE':
+              setCode(message.payload.code);
+              break;
+            case 'COMMENT_ADDED':
+              setComments((prevComments) => [...prevComments, message.payload.comment]);
+              break;
+            case 'COMMENT_DELETED':
+              setComments((prevComments) =>
+                prevComments.filter((comment) => comment.id !== message.payload.commentId)
+              );
+              break;
+            case 'PARTICIPANT_UPDATE':
+              setParticipants(message.payload.participants);
+              break;
+            default:
+              break;
+          }
+        }
       };
+
+      socket.onmessage = handleWebSocketMessage;
 
       socket.onclose = () => {
         console.log('WebSocket connection closed');
@@ -81,33 +104,8 @@ function CodeEditor() {
         }
       };
     }
-  }, [roomId, handleWebSocketMessage, user]);
-
-  // Handle incoming WebSocket messages
-  const handleWebSocketMessage = (message) => {
-    console.log('role', userRole);
-
-    if (message.type === 'CODE_UPDATE' && (userRole === 'ADMIN' || userRole === 'EDITOR')) {
-    switch (message.type) {
-      case 'CODE_UPDATE':
-        setCode(message.payload.code);
-        break;
-      case 'COMMENT_ADDED':
-        setComments((prevComments) => [...prevComments, message.payload.comment]);
-        break;
-      case 'COMMENT_DELETED':
-        setComments((prevComments) =>
-          prevComments.filter((comment) => comment.id !== message.payload.commentId)
-        );
-        break;
-      case 'PARTICIPANT_UPDATE':
-        setParticipants(message.payload.participants);
-        break;
-      default:
-        break;
-    }}
-  };
-
+  }, [roomId, userRole]); // Removed handleWebSocketMessage from dependencies
+ 
   // Broadcast code changes over WebSocket
   const broadcastCodeChange = (newCode) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
