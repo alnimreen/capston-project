@@ -32,4 +32,4 @@ COPY --from=build /app/build ./build
 EXPOSE 3000
 
 # Command to run the serve
-CMD ["/usr/local/bin/serve", "-s", "build"]
+CMD ["npx", "serve", "-s", "build"]
