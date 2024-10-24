@@ -117,7 +117,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.227.172.171 << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.81.150.100 << 'ENDSSH'
             # Create the project directory if it does not exist
             sudo usermod -aG docker ubuntu
             sleep 5
