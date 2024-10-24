@@ -48,7 +48,13 @@ jobs:
       - name: Verify Java version
         run: java -version
 
-      - name: Install Docker Compose v2
+      - name: Build with Maven
+        run: mvn clean package
+        working-directory: ./CollabCode
+      - name: Check if JAR file was created
+        run: ls -la ./CollabCode/target
+        
+      - name: Install Docker Compose 
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
@@ -84,13 +90,6 @@ jobs:
           push: true
           tags: lana0193582/python-container:latest
 
-      - name: Build with Maven
-        run: mvn clean package
-        working-directory: ./CollabCode
-
-      - name: Check if JAR file was created
-        run: ls -la ./CollabCode/target
-
       - name: Build and push Spring app image
         uses: docker/build-push-action@v3
         with:
@@ -98,9 +97,7 @@ jobs:
           file: ./CollabCode/Dockerfile
           push: true
           tags: lana0193582/spring-app:latest
-      - name: Build Docker images
-        run: docker-compose build
-        
+
       - name: Build and push React app image
         uses: docker/build-push-action@v3
         with:
@@ -109,11 +106,6 @@ jobs:
           tags: lana0193582/react-app:latest
           build-args: 
             NPM_CONFIG_PRODUCTION=false
-
-      - name: Cleanup unused Docker resources
-        run: |
-          docker rmi $(docker images -f "dangling=true" -q) || true
-          docker rm $(docker ps -a -f "status=exited" -q) || true
 
       - name: Decode SSH Private Key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
