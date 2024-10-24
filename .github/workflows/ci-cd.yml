@@ -46,7 +46,7 @@ jobs:
         run: |
           docker system prune -af
           docker volume prune -f
-          
+          docker image prune -af
       - name: Cache NPM dependencies
         uses: actions/cache@v2
         with:
