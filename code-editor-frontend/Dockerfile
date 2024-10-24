@@ -5,13 +5,13 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files
-COPY /home/ubuntu/c/code-editor-frontend/package*.json ./
+COPY package*.json ./
 
 # Install the dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY /home/ubuntu/c/code-editor-frontend ./
+COPY . .
 
 RUN npm install -g serve
 
