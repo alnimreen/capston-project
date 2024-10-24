@@ -18,7 +18,7 @@ RUN npm install -g serve
 # Build the application
 RUN npm run build
 
-FROM serve:latest
+#FROM serve:latest
 WORKDIR /app
 COPY --from=build /app/build ./build
 # Expose the port the app will run on
