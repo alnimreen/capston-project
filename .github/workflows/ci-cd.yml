@@ -106,7 +106,7 @@ jobs:
 
       - name: Build React app
         working-directory: ./code-editor-frontend
-        run: npm run build
+        run: CI=false npm run build
         
       - name: Build and push React app image
         uses: docker/build-push-action@v3
