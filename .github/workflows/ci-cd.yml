@@ -54,12 +54,7 @@ jobs:
       - name: Verify Java version
         run: java -version
 
-      - name: Build with Maven
-        run: mvn clean package
-        working-directory: ./CollabCode
-      - name: Check if JAR file was created
-        run: ls -la ./CollabCode/target
-
+    
       - name: Install Docker Compose v2
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -95,6 +90,11 @@ jobs:
           file: ./CollabCode/Dockerfiles/python/Dockerfile
           push: true
           tags: lana0193582/python-container:latest
+      - name: Build with Maven
+        run: mvn clean package
+        working-directory: ./CollabCode
+      - name: Check if JAR file was created
+        run: ls -la ./CollabCode/target
 
       - name: Build and push Spring app image
         uses: docker/build-push-action@v3
