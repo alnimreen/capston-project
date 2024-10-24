@@ -55,6 +55,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Install Docker Compose v2
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       - name: List files in CollabCode/Dockerfiles/java
         run: ls -la ./CollabCode/Dockerfiles/java
 
