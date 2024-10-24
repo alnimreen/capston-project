@@ -32,4 +32,5 @@ COPY --from=build /app/build ./build
 EXPOSE 3000
 
 # Command to run the serve
-CMD ["serve", "-s", "build"]
+# Command to keep the container running
+CMD ["tail", "-f", "/dev/null"]
