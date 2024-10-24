@@ -11,8 +11,7 @@ function RoomDetails() {
   const [files, setFiles] = useState([]); // Handle files
   const [currentPath, setCurrentPath] = useState(''); // Handle current path in the file system
   const [fileName, setName] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [fileId, setId] = useState('');
+
   const [userRole, setUserRole] = useState(null);
   const { user } = useUser();
   const [selectedFileForUpload, setSelectedFileForUpload] = useState(null);
@@ -22,14 +21,8 @@ function RoomDetails() {
   const [users, setUsers] = useState([]); // State for users
   const [participants, setParticipants] = useState([]); // To store participants and their roles
   const navigate = useNavigate(); // Initialize navigate
-  const [file, setFile] = useState(null); // To store the file object
-  const [code, setCode] = useState(''); // To store the code content
-  const [language, setLanguage] = useState('python'); // Default language
-  const [comments, setComments] = useState([]); // To store comments
-  const [userDatabaseRole, setUserDatabaseRole] = useState(null);
   const [newRoomName, setNewRoomName] = useState(''); // New state for newRoomName
   const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]);
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
   const [successMessage, setSuccessMessage] = useState(''); // State for success messages
 
@@ -98,22 +91,9 @@ function RoomDetails() {
         socket.close(); 
       }
     };
-  }, [roomId]);
+  }, [roomId, socket]);
 
-  const sendMessage = (message) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(message);
-    }
-  };
-  const getAllUsers = async () => {
-    try {
-        const response = await api.getAllUsers();
-        setUsers(response.data);
-    } catch (error) {
-      setErrorMessage('Error fetching users:', error.response ? error.response.data : error.message);
-      clearMessages();
-    }
-};
+ 
   useEffect(() => {
   const fetchFiles = async () => {
     try {
@@ -384,10 +364,6 @@ const handleFileClick = async (file) => {
 };
 
 
-  const handleBack = () => {
-    const newPath = currentPath.split('/').slice(0, -1).join('/');
-    setCurrentPath(newPath); // Go back one folder level
-  };
 
   const handleUploadFile = async () => {
     if (userRole !== 'ADMIN') {
